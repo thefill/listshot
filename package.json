@@ -1,5 +1,5 @@
 {
-    "name": "xargv",
+    "name": "listshot",
     "version": "0.0.1",
     "description": "Synthetic representation of the visible partial of the list",
     "main": "dist/cjs/index.js",
