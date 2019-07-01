@@ -1,0 +1,91 @@
+<!-- This styles partial should be included just before </head> tag for readme html page -->
+<style>
+    .title {
+        display: none;
+    }
+
+    div.tsd-page-title {
+        padding: 20px 0 20px 0;
+    }
+
+    .tsd-page-title .container {
+        display: none;
+    }
+
+    .runkit-wrapper.inactive {
+        position: relative;
+        background: rgba(0, 0, 0, 0.04);
+    }
+
+    .runkit-wrapper.inactive:before {
+        height: 38px;
+        width: 38px;
+        position: absolute;
+        margin: auto;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        animation: 0.9s infinite linear rotatePreloader;
+        content: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzgiIGhlaWdodD0iMzgiIHZpZXdCb3g9IjAgMCAzOCAzOCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4gICAgPGRlZnM+ICAgICAgICA8bGluZWFyR3JhZGllbnQgeDE9IjguMDQyJSIgeTE9IjAlIiB4Mj0iNjUuNjgyJSIgeTI9IjIzLjg2NSUiIGlkPSJhIj4gICAgICAgICAgICA8c3RvcCBzdG9wLWNvbG9yPSIjMjIyIiBzdG9wLW9wYWNpdHk9IjAiIG9mZnNldD0iMCUiLz4gICAgICAgICAgICA8c3RvcCBzdG9wLWNvbG9yPSIjMjIyIiBzdG9wLW9wYWNpdHk9Ii42MzEiIG9mZnNldD0iNjMuMTQ2JSIvPiAgICAgICAgICAgIDxzdG9wIHN0b3AtY29sb3I9IiMyMjIiIG9mZnNldD0iMTAwJSIvPiAgICAgICAgPC9saW5lYXJHcmFkaWVudD4gICAgPC9kZWZzPiAgICA8ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPiAgICAgICAgPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMSAxKSI+ICAgICAgICAgICAgPHBhdGggZD0iTTM2IDE4YzAtOS45NC04LjA2LTE4LTE4LTE4IiBpZD0iT3ZhbC0yIiBzdHJva2U9InVybCgjYSkiIHN0cm9rZS13aWR0aD0iMiI+ICAgICAgICAgICAgPC9wYXRoPiAgICAgICAgICAgIDxjaXJjbGUgZmlsbD0iIzIyMiIgY3g9IjM2IiBjeT0iMTgiIHI9IjEiPiAgICAgICAgICAgIDwvY2lyY2xlPiAgICAgICAgPC9nPiAgICA8L2c+PC9zdmc+)
+    }
+
+    .runkit-wrapper {
+        background: unset;
+        padding: 0;
+        margin: 0;
+        padding-left: 25px;
+        font-family: unset;
+        font-size: unset;
+    }
+
+    @keyframes rotatePreloader {
+        from {
+            transform: rotate(0deg);
+        }
+
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    .github-corner svg {
+        fill:#64CEAA;
+        color:#fff;
+        position: absolute;
+        top: 40px;
+        border: 0;
+        right: 0;
+    }
+
+    .tsd-panel.tsd-typography {
+        border-radius: 0 30px 0 0;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: octocat-wave 560ms ease-in-out
+    }
+
+    @keyframes octocat-wave {
+        0%, 100% {
+            transform: rotate(0)
+        }
+        20%, 60% {
+            transform: rotate(-25deg)
+        }
+        40%, 80% {
+            transform: rotate(10deg)
+        }
+    }
+
+    @media (max-width: 500px) {
+        .github-corner:hover .octo-arm {
+            animation: none
+        }
+
+        .github-corner .octo-arm {
+            animation: octocat-wave 560ms ease-in-out
+        }
+    }
+
+</style>

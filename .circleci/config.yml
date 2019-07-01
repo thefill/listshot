@@ -1,0 +1,210 @@
+version: 2.1
+
+# Default job config used across whole config file
+defaultConfig: &baseJobConfig
+    working_directory: ~/repo
+    docker:
+        - image: fill/alpine-node:8.16.0
+
+# Default release filters
+releaseFilters: &releaseFilters
+    filters:
+        tags:
+            only: /^v.*/
+        branches:
+            ignore:
+                - /.*/
+
+# Default release filters
+documentationFilters: &documentationFilters
+    filters:
+        tags:
+            only: /^docs-.*/
+        branches:
+            ignore:
+                - /.*/
+
+# Default filters
+defaultFilters: &defaultFilters
+    filters:
+        tags:
+            ignore:
+                - /.*/
+        branches:
+            only:
+                - /feature\/.*/
+                - master
+
+restoreCacheConfig: &restoreCacheConfig
+    keys:
+        - v1-dependencies-{{ checksum "package.json" }}
+        # fallback to using the latest cache if no exact match is found
+        - v1-dependencies-
+
+saveCacheConfig: &saveCacheConfig
+    paths:
+        - node_modules
+    key: v1-dependencies-{{ checksum "package.json" }}
+
+jobs:
+    setup:
+        <<: *baseJobConfig
+        steps:
+            - checkout
+
+            - restore_cache:
+                  <<: *restoreCacheConfig
+
+            - run:
+                  name: Install packages
+                  command: npm install
+
+            - save_cache:
+                  <<: *saveCacheConfig
+
+    build-lint-test:
+        <<: *baseJobConfig
+        steps:
+            - checkout
+
+            - restore_cache:
+                  <<: *restoreCacheConfig
+
+            - run:
+                  name: Lint code
+                  command: npm run lint
+
+            - run:
+                  name: Execute unit & E2E tests and check test coverage
+                  command: |
+                      npm run test
+
+            - run:
+                  name: Build
+                  command: |
+                      npm run build
+
+            - persist_to_workspace:
+                  root: ~/repo
+                  paths:
+                      - dist
+                      - reports
+
+    publish-tests:
+        <<: *baseJobConfig
+        steps:
+            - checkout
+
+            - attach_workspace:
+                  at: ~/repo
+
+            - restore_cache:
+                  <<: *restoreCacheConfig
+
+            - store_test_results:
+                  path: reports/junit
+
+            - run:
+                  name: Publish test coverage
+                  command: |
+                      npm run publish:coverage
+
+    publish-documentation:
+        <<: *baseJobConfig
+        steps:
+            - checkout
+
+            - attach_workspace:
+                  at: ~/repo
+
+            - restore_cache:
+                  <<: *restoreCacheConfig
+
+            - run:
+                  name: Setup git user
+                  command: |
+                      git config user.email "bot@circleci.com"
+                      git config user.name "ci-bot"
+
+            - run:
+                  name: Build latest docs
+                  command: |
+                      npm run docs
+
+            - run:
+                  name: Publish docs
+                  command: |
+                      npm run publish:docs
+
+    publish-package:
+        <<: *baseJobConfig
+        steps:
+            - checkout
+
+            - attach_workspace:
+                  at: ~/repo
+
+            - restore_cache:
+                  <<: *restoreCacheConfig
+
+            - run:
+                  name: Authenticate with registry
+                  command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/repo/.npmrc
+
+            - run:
+                  name: Publish package
+                  command: npm publish
+
+workflows:
+    version: 2
+
+    build-test:
+        jobs:
+            - setup:
+                  <<: *defaultFilters
+            - build-lint-test:
+                  <<: *defaultFilters
+                  requires:
+                      - setup
+            - publish-tests:
+                  <<: *defaultFilters
+                  requires:
+                      - build-lint-test
+
+    documentation:
+        jobs:
+            - setup:
+                  <<: *documentationFilters
+            - build-lint-test:
+                  <<: *documentationFilters
+                  requires:
+                      - setup
+            - publish-tests:
+                  <<: *documentationFilters
+                  requires:
+                      - build-lint-test
+            - publish-documentation:
+                  <<: *documentationFilters
+                  requires:
+                      - build-lint-test
+
+    build-test-release:
+        jobs:
+            - setup:
+                  <<: *releaseFilters
+            - build-lint-test:
+                  <<: *releaseFilters
+                  requires:
+                      - setup
+            - publish-tests:
+                  <<: *releaseFilters
+                  requires:
+                      - build-lint-test
+            - publish-documentation:
+                  <<: *releaseFilters
+                  requires:
+                      - build-lint-test
+            - publish-package:
+                  <<: *releaseFilters
+                  requires:
+                      - build-lint-test

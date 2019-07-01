@@ -1,0 +1,17 @@
+{
+    "extends": ["tslint:recommended"],
+    "linterOptions": {
+        "exclude": [
+            "node_modules/**/*.ts"
+        ]
+    },
+    "rules": {
+        "quotemark": false,
+        "trailing-comma": false,
+        "ordered-imports": false,
+        "no-trailing-whitespace": false,
+        "object-literal-sort-keys": false,
+        "object-literal-shorthand": false,
+        "one-line": false
+    }
+}

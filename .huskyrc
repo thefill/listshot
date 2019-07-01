@@ -1,0 +1,7 @@
+{
+    "skipCI": false,
+    "hooks": {
+        "pre-commit": "run-s -s lint test build clean",
+        "pre-push": "run-s -s lint test clean"
+    }
+}

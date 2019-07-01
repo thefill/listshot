@@ -1,0 +1,43 @@
+# intermediate code
+docs/
+src/
+README.html
+TODO.md
+API-README.md
+BASE-README.md
+
+# dependencies
+node_modules/
+
+# testing
+reports/
+
+# production
+build/
+cache/
+.cache
+
+# misc
+.idea/
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# configs
+.editorconfig
+.huskyrc
+.nvmrc
+.stylelintrc
+jest-e2e.config.json
+jest-unit.config.json
+tsconfig.cjs.json
+tsconfig.esm.json
+tsconfig.json
+tslint.json
+.circleci/
